@@ -102,5 +102,118 @@
     return NO;
 }
 
+/*
+ 5.得到中英文混合字符串长度
+ */
++(NSInteger)getStringAbsoluteLength:(NSString *)stringTemp{
+    NSStringEncoding enc =
+    CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    
+    NSData* da = [stringTemp dataUsingEncoding:enc];
+    return [da length];
+}
+
 
 @end
+
+@implementation NSString (GetZoneTimeNSString)
+
+static NSDateFormatter  *yyyyMMddhhmmssDateformatter;
+
++(NSDate *)convertYYMMDDhhmmssToDate:(NSString *)YYMMDDhhmmss
+{
+    if(!yyyyMMddhhmmssDateformatter){
+        yyyyMMddhhmmssDateformatter = [[NSDateFormatter alloc]init];
+        [yyyyMMddhhmmssDateformatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    }
+    
+    NSDate *convertDate = [yyyyMMddhhmmssDateformatter dateFromString:YYMMDDhhmmss];
+    return convertDate;
+}
+
++ (NSString *)getZoneConvertHHMMssStandardTime:(NSString *)inputYY_MM_DD_time{
+    NSTimeZone *zone = [NSTimeZone systemTimeZone]; // 获得系统的时区
+    NSInteger timeZoneValueOffset = [zone secondsFromGMT] / 3600;
+
+    NSRange rang = NSMakeRange(inputYY_MM_DD_time.length - 8, 8);
+    NSString *hhMMTimeString = [inputYY_MM_DD_time substringWithRange:rang];
+    
+    NSInteger hourValue = [[hhMMTimeString substringToIndex:2] integerValue];
+    NSString *mmssString = [hhMMTimeString substringWithRange:NSMakeRange(3, 5)];
+    NSInteger deltaHourInteger = timeZoneValueOffset - 8;
+    
+    NSInteger hourIntValue = hourValue + deltaHourInteger;
+    
+    if(hourIntValue > 24){
+        hourIntValue = hourIntValue - 24;
+    }
+    else if(hourIntValue < 0){
+        hourIntValue = hourIntValue + 24;
+    }
+    
+    NSString *showTimeString = [NSString stringWithFormat:@"%02ld:%@",hourIntValue,mmssString];
+    return showTimeString;
+}
+
++ (NSString *)getZoneConvertHHMMStandardTime:(NSString *)inputYY_MM_DD_time
+{
+    NSTimeZone *zone = [NSTimeZone systemTimeZone]; // 获得系统的时区
+    NSInteger timeZoneValueOffset = [zone secondsFromGMT] / 3600;
+
+    NSRange rang = NSMakeRange(inputYY_MM_DD_time.length - 8, 5);
+    NSString *hhMMTimeString = [inputYY_MM_DD_time substringWithRange:rang];
+    
+    NSInteger hourValue = [[hhMMTimeString substringToIndex:2] integerValue];
+    NSString *minValueString = [hhMMTimeString substringWithRange:NSMakeRange(3, 2)];
+    NSInteger deltaHourInteger = timeZoneValueOffset;
+    
+    NSInteger hourIntValue = hourValue + deltaHourInteger;
+    
+    if(hourIntValue > 24){
+        hourIntValue = hourIntValue - 24;
+    }
+    else if(hourIntValue < 0){
+        hourIntValue = hourIntValue + 24;
+    }
+    
+    NSString *showTimeString = [NSString stringWithFormat:@"%02ld:%@",hourIntValue,minValueString];
+    return showTimeString;
+}
+
++ (NSString *)getZoneConvertYYMMDDTimeStandardTime:(NSString *)inputYY_MM_DD_time{
+    NSTimeZone *zone = [NSTimeZone systemTimeZone]; // 获得系统的时区
+    NSInteger timeZoneValueOffset = [zone secondsFromGMT] / 3600;
+
+    NSDate *initialDate = [NSString convertYYMMDDhhmmssToDate:inputYY_MM_DD_time];
+    
+    NSTimeInterval timeInterval = (timeZoneValueOffset - 8) * 60 * 60;
+    NSDate *ConvertTimeDate = [initialDate dateByAddingTimeInterval:timeInterval];
+    NSString *convertZoneTimeString = [yyyyMMddhhmmssDateformatter stringFromDate:ConvertTimeDate];
+    return convertZoneTimeString;
+}
+
++ (NSString *)gettZoneConverHHMMNumberOnlyTime:(NSString *)inputYYMMDDtime
+{
+    NSTimeZone *zone = [NSTimeZone systemTimeZone]; // 获得系统的时区
+    NSInteger timeZoneValueOffset = [zone secondsFromGMT] / 3600;
+
+    NSRange rang = NSMakeRange(8, 4);
+    NSString *hhMMTimeString = [inputYYMMDDtime substringWithRange:rang];
+    NSInteger hourValue = [[hhMMTimeString substringToIndex:2] integerValue];
+    NSString *minValueString = [hhMMTimeString substringWithRange:NSMakeRange(2, 2)];
+    NSInteger deltaHourIntValue = timeZoneValueOffset - 8;
+    
+    NSInteger hourIntValue = hourValue + deltaHourIntValue;
+    
+    if(hourIntValue > 24){
+        hourIntValue = hourIntValue- 24;
+    }
+    else if(hourIntValue < 0){
+        hourIntValue = hourIntValue + 24;
+    }
+    NSString *showTimeString = [NSString stringWithFormat:@"%02ld:%@",hourIntValue,minValueString];
+    return showTimeString;
+}
+
+@end
+

@@ -35,5 +35,36 @@
  */
 -(BOOL)validateChinesePhone;
 
+/*
+ 5.得到中英文混合字符串长度
+*/
++(NSInteger)getStringAbsoluteLength:(NSString *)stringTemp;
+
 @end
+
+/*
+ 6.做时区转换的时候用到的方法（该方法主要是将东八区的时间转换成相应时区的时间）
+ */
+@interface NSString (GetZoneTimeNSString)
+
++(NSDate *)convertYYMMDDhhmmssToDate:(NSString *)YYMMDDhhmmss;
+
+//将时间 yymmdd hh:mm:ss 按 时区 转换 时：分：秒
+//eg: 2018-01-29 19:56:34 转化为相应时区的时间  21:56:34
++ (NSString *)getZoneConvertHHMMssStandardTime:(NSString *)inputYY_MM_DD_time;
+
+//将时间 yymmdd hh:mm:ss 按 时区 转换 时：分
+//eg: 2018-01-29 19:56:34 转化为相应时区的时间  19:56
++ (NSString *)getZoneConvertHHMMStandardTime:(NSString *)inputYY_MM_DD_time;
+
+//将时间 yymmdd hh:mm:ss 按 时区 转换
+//eg: 2018-01-29 19:56:34 转化为相应时区的时间  2018-01-29 21:56:34
++ (NSString *)getZoneConvertYYMMDDTimeStandardTime:(NSString *)inputYY_MM_DD_time;
+
+//将时间 yymmddhhmmss 按 时区 转换
+//eg:20180129195634 转化为相应时区的时间  19:56
++ (NSString *)gettZoneConverHHMMNumberOnlyTime:(NSString *)inputYYMMDDtime;
+
+@end
+
 
