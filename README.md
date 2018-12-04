@@ -2,7 +2,7 @@
 添加开发中常用到的一些工具方法<br/><br/>
 
 *获取手机的设备信息，（已补充iPhone XS，iPhone XS Max，iPhone XR）<br/>
-+ (NSString *)machineModelName;
++(NSString *)machineModelName;
 
 *判断字符串中是否包含中文字符<br/>
 -(BOOL)containChinese;
