@@ -10,6 +10,10 @@
 
 @interface ELPUniversalMethods : NSObject
 
+/*
+ 1. 获取手机的设备信息,是iPhone哪一款
+ */
++ (NSString *)machineModelName;
 
 @end
 
@@ -39,6 +43,7 @@
  5.得到中英文混合字符串长度
 */
 +(NSInteger)getStringAbsoluteLength:(NSString *)stringTemp;
+
 
 @end
 
