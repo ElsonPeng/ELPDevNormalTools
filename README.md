@@ -1,5 +1,4 @@
 # ELPDevNormalTools
-Normal develop tools
 添加开发中常用到的一些工具方法<br/>
 1.获取手机的设备信息，（已补充iPhone XS，iPhone XS Max，iPhone XR）<br/><br/>
 + (NSString *)machineModelName;
